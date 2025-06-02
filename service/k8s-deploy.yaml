@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-app
+  namespace: payments
+  labels:
+    app: payments-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: payments-app
+  template:
+    metadata:
+      labels:
+        app: payments-app
+    spec:
+      containers:
+      - name: echo
+        image: ealen/echo-server
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-app
+  namespace: payments
+spec:
+  selector:
+    app: payments-app
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
